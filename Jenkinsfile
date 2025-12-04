@@ -30,7 +30,7 @@ pipeline {
         stage('docker containerization'){
             steps{
                 sh '''
-                docker run -it -d --name c1 -p 9000:8080 amulyanikitha/continous-intergartion
+                docker run -it -d --name c1 -p 9000:8080 amulyanikitha/continous-intergartion:1
                 '''
                 
             }
@@ -38,7 +38,7 @@ pipeline {
         stage('docker login'){
             steps{
                 script {
-                    withcredential([usernamePassword(credentialsId: 'dockerhub-credentials',
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials',
                     passwordVariable:'DOCKER_PASSWORD',
                     usernameVariable:'DOCKER_USERNAME')])
                 sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
