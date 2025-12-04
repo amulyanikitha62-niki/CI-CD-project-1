@@ -9,48 +9,55 @@ pipeline {
     stages{
         stage('git connect'){
             steps {
-            git branch:'testing1', url:'https://github.com/amulyanikitha62-niki/CI-CD-project-1.git'
+                git branch:'testing1', url:'https://github.com/amulyanikitha62-niki/CI-CD-project-1.git'
+            }
         }
-        }
+        
         stage('compile'){ 
             steps {
-            sh 'mvn compile'
+                sh 'mvn compile'
+            }
         }
-        }
+        
         stage('build'){
             steps{
-            sh 'mvn clean install'
+                sh 'mvn clean install'
+            }
         }
-        }
+        
         stage('docker image build'){
             steps{
-            sh 'docker build -t amulyanikitha/continous-intergartion:1 .'
+                sh 'docker build -t amulyanikitha/continous-intergartion:1 .'
+            }
         }
-        }
+        
         stage('docker containerization'){
             steps{
                 sh '''
+                docker stop c1 || true
+                docker rm c1 || true
                 docker run -it -d --name c1 -p 9000:8080 amulyanikitha/continous-intergartion:1
                 '''
-                
             }
         }
+        
         stage('docker login'){
             steps{
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials',
-                    passwordVariable:'DOCKER_PASSWORD',
-                    usernameVariable:'DOCKER_USERNAME')])
-                sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                                                     passwordVariable:'DOCKER_PASSWORD',
+                                                     usernameVariable:'DOCKER_USERNAME')]) {
+                        sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                    }
                 }
             }
-            
         }
+        
         stage('dockerpush'){
             steps{
                 sh 'docker push amulyanikitha/continous-intergartion:1'
             }
         }
-        
     }
 }
+
