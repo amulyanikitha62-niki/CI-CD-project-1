@@ -24,7 +24,7 @@ pipeline {
         }
         stage('docker image build'){
             steps{
-            sh 'docker build -t amulyanikitha/continous-intergartion:1 . '
+            sh 'docker build -t amulyanikitha/continous-intergartion:1 .'
         }
         }
         stage('docker containerization'){
