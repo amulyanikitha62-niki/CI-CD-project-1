@@ -9,7 +9,7 @@ pipeline {
     stages{
         stage('git connect'){
             steps {
-            git branch:'trial-1', url:'https://github.com/amulyanikitha62-niki/CI-CD-project-1.git'
+            git branch:'testing1', url:'https://github.com/amulyanikitha62-niki/CI-CD-project-1.git'
         }
         }
         stage('compile'){ 
